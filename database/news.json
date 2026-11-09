@@ -1,0 +1,29 @@
+[
+  {
+    "id": "news-1",
+    "title": "¡Inauguración Oficial de L2 Two Moons High Five!",
+    "category": "Anuncio",
+    "date": "2026-09-22",
+    "summary": "Nos complace anunciar la apertura del servidor. Ya puedes descargar el Launcher oficial y registrar tu cuenta con anticipación.",
+    "content": "Bienvenidos a L2 Two Moons. Tras meses de optimización en geodata, balance de clases y desarrollo de eventos, abrimos las puertas a la comunidad de habla hispana. ¡Preparen sus clanes!",
+    "featured": true
+  },
+  {
+    "id": "news-2",
+    "title": "Guía de Inicio Rápido & Zonas de Nivelación",
+    "category": "Tutorial",
+    "date": "2026-09-20",
+    "summary": "Conoce dónde subir de nivel eficientemente, cómo funciona el NPC Buffer y las recompensas del Starter Kit para nuevos jugadores.",
+    "content": "Al crear tu personaje recibirás un Starter Kit con armas sin grado, shot ilimitados de prueba y runas de experiencia para alcanzar nivel 40 en minutos.",
+    "featured": false
+  },
+  {
+    "id": "news-3",
+    "title": "Cronograma de Asedios de Castillos y Olimpiadas",
+    "category": "Eventos",
+    "date": "2026-09-18",
+    "summary": "El ciclo de Olimpiadas será quincenal y los primeros asedios a Aden y Giran comenzarán el segundo fin de semana.",
+    "content": "Las batallas por los castillos otorgarán puntos de clan, habilidades de señorío y bonificaciones en las tiendas de territorio para todos los integrantes.",
+    "featured": false
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "serverInfo": {
+    "name": "L2 Two Moons",
+    "chronicle": "High Five Part 5",
+    "engine": "L2Off / Java Optimized Engine",
+    "status": "ONLINE",
+    "statusText": "Servidor Activo",
+    "onlinePlayers": 642,
+    "peakPlayers": 890,
+    "openingDate": "2026-12-20T00:00:00",
+    "slogan": "El despertar de las Dos Lunas",
+    "subtitle": "Una experiencia High Five legendaria para la comunidad latina: equilibrio de clases, eventos masivos y estabilidad 24/7 sin Pay-To-Win.",
+    "announcement": "🔥 ¡Gran Apertura Oficial el 20 de Diciembre a las 00:00! Descarga ya el Launcher y asegura tu cuenta."
+  },
+  "rates": {
+    "exp": "x50",
+    "sp": "x50",
+    "adena": "x25",
+    "drop": "x10",
+    "spoil": "x10",
+    "partyExp": "x1.5",
+    "raidDrop": "x3",
+    "safeEnchant": "+3 (+4 full armor)",
+    "maxEnchantWeapon": "+16",
+    "maxEnchantArmor": "+12",
+    "blessedChance": "68%",
+    "buffDuration": "2 Horas",
+    "buffSlots": "28 + 4 Divine Inspiration",
+    "danceSongSlots": "14 Slots",
+    "autoLoot": "Habilitado (Excepto Grand Boss)",
+    "autoLearnSkills": "Habilitado",
+    "offlineShop": "Comando .offline",
+    "subClass": "Subclase acumulativa o sin quest previa (Lvl 80)",
+    "noblesse": "Quest simplificada o compra por Carmín de Boss"
+  },
+  "downloads": {
+    "launcherName": "Two Moons Launcher v1.2",
+    "launcherVersion": "1.2.0",
+    "launcherSize": "8.5 MB",
+    "launcherDirect": "https://mega.nz/twomoons-launcher",
+    "clientMega": "https://mega.nz/twomoons-client-h5",
+    "clientMediafire": "https://mediafire.com/twomoons-client-h5",
+    "clientDrive": "https://drive.google.com/twomoons-client-h5",
+    "patchMega": "https://mega.nz/twomoons-patch-system",
+    "patchMediafire": "https://mediafire.com/twomoons-patch-system",
+    "patchDrive": "https://drive.google.com/twomoons-patch-system",
+    "systemRequirements": {
+      "os": "Windows 7 / 10 / 11 (64-bit)",
+      "ramMin": "4 GB RAM (8 GB recomendado)",
+      "disk": "15 GB de espacio libre",
+      "gpu": "DirectX 9.0c compatible",
+      "connection": "Banda ancha estable"
+    }
+  },
+  "social": {
+    "discord": "https://discord.gg/twomoons",
+    "whatsapp": "https://chat.whatsapp.com/twomoons",
+    "youtube": "https://youtube.com/@l2twomoons",
+    "tiktok": "https://tiktok.com/@l2twomoons",
+    "facebook": "https://facebook.com/l2twomoons",
+    "email": "contacto@l2twomoons.com"
+  },
+  "features": [
+    {
+      "id": "boss-jewels",
+      "title": "Joyas Boss & Raras Escalonadas",
+      "icon": "fa-gem",
+      "description": "Sistema progresivo de Joyas Épicas y Raras por Tiers (Nivel 1 al 5) para que todos los jugadores puedan progresar de forma justa y desafiante."
+    },
+    {
+      "id": "belts-cloaks",
+      "title": "Belts & Capas Legendarias",
+      "icon": "fa-shield-halved",
+      "description": "Nuevas Belts y Capas personalizadas obtenibles mediante misiones de clan, cacería de Raid Bosses e intercambios de medallas PvP."
+    },
+    {
+      "id": "auto-events",
+      "title": "Eventos Automáticos Diarios",
+      "icon": "fa-trophy",
+      "description": "TvT (Team vs Team), CtF (Capture the Flag), Deathmatch y Torneos Last Hero cada 2 horas con recompensas automáticas en medallas y consumibles."
+    },
+    {
+      "id": "farm-zones",
+      "title": "Zonas de Farm Dinámicas & PvP Flag",
+      "icon": "fa-dungeon",
+      "description": "Zonas de cacería divididas en Solo Farm para jugadores casuales, Party Farm para clanes y Zonas PvP Flagged con drops mejorados."
+    },
+    {
+      "id": "anti-cheat",
+      "title": "Protección Anti-Bot & Anti-DDoS 24/7",
+      "icon": "fa-lock",
+      "description": "Servidor monitoreado con seguridad Active-Guard contra bots y ataques distribuidos, garantizando latencia ultra baja y combate 100% legítimo."
+    },
+    {
+      "id": "fair-play",
+      "title": "Comunidad & Economía Estable",
+      "icon": "fa-scale-balanced",
+      "description": "Economía de Adena cuidada. Donaciones transparentes y orientadas a cosméticos y servicios estéticos, preservando el espíritu competitivo."
+    }
+  ]
+}

@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L2 Two Moons - Servidor High Five Privado</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="L2 Two Moons - Servidor privado de Lineage II High Five Part 5 para la comunidad latina. Rates equilibrados x50 Craft-PvP, eventos diarios, balance y estabilidad 24/7.">
+  <meta name="keywords" content="Lineage 2, L2 H5, High Five, L2 Two Moons, Servidor L2, Lineage II privado, L2 latino, PvP, Craft PvP">
+  <meta property="og:title" content="L2 Two Moons - Servidor Privado High Five">
+  <meta property="og:description" content="Únete a la batalla definitiva por Aden y Elmore. Servidor High Five balanceado, sin Pay to Win y con comunidad activa.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+  <!-- Ambient Cosmic Canvas & Nebula Background -->
+  <canvas id="cosmic-canvas"></canvas>
+  <div class="cosmic-nebula-bg"></div>
+
+  <div class="content-wrapper">
+
+    <!-- Admin Master Topbar (Visible when logged in as admin) -->
+    <div id="admin-topbar" class="admin-topbar">
+      <div class="admin-topbar-inner">
+        <div class="admin-tag">
+          <i class="fa-solid fa-crown" style="color: #ffaa00;"></i>
+          <span>Modo Administrador Activo: <strong id="admin-display-name">Admin</strong></span>
+        </div>
+        <div class="admin-topbar-actions">
+          <button class="btn-admin-edit" onclick="AdminCMS.openDashboard()">
+            <i class="fa-solid fa-sliders"></i> Panel de Administración CMS
+          </button>
+          <button class="btn-admin-edit" onclick="Auth.clearSession()" style="background: rgba(255,255,255,0.15); color: #fff;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Announcement Bar -->
+    <aside class="announcement-bar" aria-label="Anuncios del servidor">
+      <div class="container announcement-inner">
+        <div class="announcement-text">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span id="announcement-ticker-text">🔥 ¡Inauguración Oficial este 15 de Octubre! Descarga ya el Launcher y asegura tu cuenta.</span>
+        </div>
+        <div class="quick-links">
+          <a href="#rates" class="quick-link-item"><i class="fa-solid fa-bolt"></i> Rates x50</a>
+          <a href="#descargas" class="quick-link-item"><i class="fa-solid fa-download"></i> Launcher</a>
+          <a href="https://discord.gg/twomoons" target="_blank" class="quick-link-item"><i class="fa-brands fa-discord"></i> Discord</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Navigation Bar -->
+    <header class="main-header">
+      <div class="nav-container">
+        <!-- Brand Logo -->
+        <a href="#inicio" class="brand-logo-wrap">
+          <img src="assets/images/logo.png" alt="L2 Two Moons Logo" class="brand-logo-img">
+          <div class="brand-text">
+            <h1 id="live-server-name">L2 TWO MOONS</h1>
+            <span>HIGH FIVE SERVER</span>
+          </div>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav aria-label="Menú principal">
+          <ul id="main-nav-menu" class="nav-menu">
+            <li class="nav-item"><a href="#inicio" class="active">Inicio</a></li>
+            <li class="nav-item"><a href="#rates">Información & Rates</a></li>
+            <li class="nav-item"><a href="#caracteristicas">Novedades</a></li>
+            <li class="nav-item"><a href="#razas">Razas & Clases</a></li>
+            <li class="nav-item"><a href="#descargas">Descargas</a></li>
+            <li class="nav-item"><a href="#noticias">Noticias</a></li>
+            <li class="nav-item"><a href="#donaciones">Donaciones</a></li>
+            <li class="nav-item"><a href="#comunidad">Comunidad</a></li>
+          </ul>
+        </nav>
+
+        <!-- Right Side: Status Badge & Auth Buttons -->
+        <div class="nav-auth-buttons">
+          <!-- Server Status Indicator -->
+          <div class="server-status-badge" title="Estado del Servidor">
+            <span id="live-status-pill" class="pulse-indicator"></span>
+            <span id="live-status-text">ONLINE</span>
+            <span style="color: var(--color-silver-dark); font-size: 0.75rem;">|</span>
+            <span id="live-player-count">642</span> <i class="fa-solid fa-user-group" style="font-size: 0.75rem; color: var(--color-purple-light);"></i>
+          </div>
+
+          <!-- Guest State: Login / Register Buttons -->
+          <div id="nav-guest-actions" style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-outline" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="openModal('login-modal')">
+              <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+            </button>
+            <button class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="openModal('register-modal')">
+              <i class="fa-solid fa-user-plus"></i> Registro
+            </button>
+          </div>
+
+          <!-- Logged In State: User Pill -->
+          <div id="nav-user-actions" style="display: none; align-items: center; gap: 0.5rem;">
+            <div class="btn-user-profile" onclick="Auth.isAdmin() ? AdminCMS.openDashboard() : openModal('user-profile-modal')">
+              <i class="fa-solid fa-user-shield" style="color: var(--color-ember-gold);"></i>
+              <span id="nav-username-label">Usuario</span>
+              <span id="nav-user-role-tag" class="role-badge player">Jugador</span>
+            </div>
+            <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="Auth.clearSession()" title="Cerrar Sesión">
+              <i class="fa-solid fa-power-off"></i>
+            </button>
+          </div>
+
+          <!-- Mobile Hamburger Button -->
+          <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Abrir Menú">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section">
+      <div class="container hero-content">
+        <!-- Floating Logo -->
+        <img src="assets/images/logo.png" alt="L2 Two Moons High Five" class="hero-logo-center">
+
+        <!-- Chronicle Badge -->
+        <div>
+          <span class="hero-pill">
+            <i class="fa-solid fa-shield-halved" style="color: var(--color-ember-gold);"></i>
+            <span id="live-chronicle-badge">CRÓNICA HIGH FIVE PART 5</span>
+          </span>
+        </div>
+
+        <!-- Hero Title -->
+        <h2 id="hero-server-title" class="hero-title gradient-text-purple">L2 TWO MOONS</h2>
+        <h3 id="hero-server-slogan" class="font-epic" style="color: var(--color-ember-gold); font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: 1px;">
+          El Despertar de las Dos Lunas
+        </h3>
+        <p id="hero-server-subtitle" class="hero-subtitle">
+          Una experiencia High Five legendaria para la comunidad latina: equilibrio absoluto de clases, eventos masivos cada 2 horas y estabilidad 24/7 sin Pay-To-Win.
+        </p>
+
+        <!-- Countdown to Launch / Season -->
+        <div class="countdown-box">
+          <div class="countdown-title">
+            <i class="fa-solid fa-hourglass-half"></i> <span id="countdown-title-text">Gran Apertura Oficial: 20 de Diciembre (00:00)</span>
+          </div>
+          <div class="countdown-grid">
+            <div class="countdown-item">
+              <span id="cd-days" class="countdown-num">14</span>
+              <span class="countdown-label">Días</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-item">
+              <span id="cd-hours" class="countdown-num">08</span>
+              <span class="countdown-label">Horas</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-item">
+              <span id="cd-mins" class="countdown-num">45</span>
+              <span class="countdown-label">Min</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-item">
+              <span id="cd-secs" class="countdown-num">20</span>
+              <span class="countdown-label">Seg</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero CTAs -->
+        <div class="hero-actions">
+          <a id="btn-hero-download" href="#descargas" class="btn btn-gold btn-lg">
+            <i class="fa-solid fa-download"></i> Descargar Launcher
+          </a>
+          <button class="btn btn-primary btn-lg" onclick="openModal('register-modal')">
+            <i class="fa-solid fa-gamepad"></i> Crear Cuenta de Juego
+          </button>
+          <a id="link-discord-hero" href="https://discord.gg/twomoons" target="_blank" class="btn btn-outline btn-lg">
+            <i class="fa-brands fa-discord"></i> Discord Oficial
+          </a>
+        </div>
+
+        <!-- Quick Stats Strip -->
+        <div class="server-stats-strip">
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-server"></i></div>
+            <div class="stat-info">
+              <div class="stat-label">Login & Game Server</div>
+              <div class="stat-val" style="color: var(--status-online);">100% Operativo</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-microchip"></i></div>
+            <div class="stat-info">
+              <div class="stat-label">Motor & Geodata</div>
+              <div id="stat-engine-val" class="stat-val">L2Off 60FPS</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-signal"></i></div>
+            <div class="stat-info">
+              <div class="stat-label">Latencia Promedio</div>
+              <div class="stat-val" style="color: #6ee7b7;">15ms - 28ms</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-shield-virus"></i></div>
+            <div class="stat-info">
+              <div class="stat-label">Anti-Bot & Anti-DDoS</div>
+              <div class="stat-val" style="color: var(--color-purple-light);">Active-Guard Pro</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Server Rates & Information Section -->
+    <section id="rates">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">Configuración Oficial</span>
+          <h2 class="section-title gradient-text-purple">Información & Rates del Servidor</h2>
+          <p class="section-desc">Diseñado milimétricamente para ofrecer una progresión ágil y un end-game competitivo en batallas de clanes y olimpiadas.</p>
+        </header>
+
+        <div class="rates-container">
+          <!-- Main Rates Card -->
+          <div class="rates-main-card">
+            <div class="rates-card-header">
+              <h3><i class="fa-solid fa-chart-line" style="color: var(--color-ember-gold);"></i> Multiplicadores Principales</h3>
+              <span class="rates-badge">High Five x50</span>
+            </div>
+
+            <div class="rates-grid">
+              <div class="rate-box">
+                <div class="rate-type">Experiencia</div>
+                <div id="rate-val-exp" class="rate-value">x50</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Skill Points</div>
+                <div id="rate-val-sp" class="rate-value">x50</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Adena Drop</div>
+                <div id="rate-val-adena" class="rate-value">x25</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Item Drop</div>
+                <div id="rate-val-drop" class="rate-value">x10</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Spoil Rate</div>
+                <div id="rate-val-spoil" class="rate-value">x10</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Party Bonus</div>
+                <div id="rate-val-party" class="rate-value">x1.5</div>
+              </div>
+              <div class="rate-box">
+                <div class="rate-type">Raid Drop</div>
+                <div id="rate-val-raid" class="rate-value">x3</div>
+              </div>
+            </div>
+
+            <!-- List of mechanics -->
+            <ul class="rates-list">
+              <li>
+                <span><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--color-purple-light); margin-right: 0.5rem;"></i> Sistema de Buffs</span>
+                <span id="rate-val-buff-slots" class="val">28 + 4 Divine Inspiration | 14 Danzas/Canciones</span>
+              </li>
+              <li>
+                <span><i class="fa-regular fa-clock" style="color: var(--color-purple-light); margin-right: 0.5rem;"></i> Duración de Buffs</span>
+                <span id="rate-val-buff-duration" class="val">2 Horas (Buffer Completo en Ciudades y Alt+B)</span>
+              </li>
+              <li>
+                <span><i class="fa-solid fa-users-viewfinder" style="color: var(--color-purple-light); margin-right: 0.5rem;"></i> Subclases</span>
+                <span id="rate-val-subclass" class="val">Acumulativas o Sin Quest previa (Lvl 80)</span>
+              </li>
+              <li>
+                <span><i class="fa-solid fa-medal" style="color: var(--color-purple-light); margin-right: 0.5rem;"></i> Estatus Noblesse</span>
+                <span id="rate-val-noblesse" class="val">Quest simplificada o Carmín de Raid Bosses</span>
+              </li>
+              <li>
+                <span><i class="fa-solid fa-bag-shopping" style="color: var(--color-purple-light); margin-right: 0.5rem;"></i> Tienda Offline & Auto-Loot</span>
+                <span class="val">Habilitados (.offline y auto pick-up activo)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Enchantment & Safety Card -->
+          <div class="rates-sub-card">
+            <div class="rates-card-header">
+              <h3><i class="fa-solid fa-wand-sparkles" style="color: var(--color-purple-mid);"></i> Encantamiento</h3>
+              <span class="rates-badge" style="background: rgba(157,78,221,0.2); border-color: var(--color-purple-mid); color: #fff;">Seguro & Justo</span>
+            </div>
+
+            <ul class="rates-list" style="margin-bottom: 2rem;">
+              <li>
+                <span>Enchant Seguro:</span>
+                <span id="rate-val-safe-enchant" class="val" style="color: var(--status-online);">+3 (+4 Armor Entera)</span>
+              </li>
+              <li>
+                <span>Armas Enchant Máximo:</span>
+                <span id="rate-val-max-weapon" class="val" style="color: var(--color-ember-gold);">+16</span>
+              </li>
+              <li>
+                <span>Armaduras Enchant Máximo:</span>
+                <span id="rate-val-max-armor" class="val" style="color: var(--color-ember-gold);">+12</span>
+              </li>
+              <li>
+                <span>Probabilidad Blessed Scroll:</span>
+                <span class="val">68% Éxito</span>
+              </li>
+            </ul>
+
+            <div style="background: rgba(8,4,16,0.5); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+              <h4 style="font-size: 1rem; color: #fff; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+                <i class="fa-solid fa-balance-scale" style="color: var(--color-ember-gold);"></i> Filosofía Fair PvP
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--color-silver-dark); line-height: 1.5;">
+                Todos los scrolls blessed y normales se consiguen farmeando en zonas públicas y en eventos diarios. Sin ventajas desbalanceadas ni ítems imposibles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Unique Features & Novedades (Like L2Catia) -->
+    <section id="caracteristicas" style="background: rgba(11, 5, 23, 0.4);">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">¿Qué nos diferencia?</span>
+          <h2 class="section-title gradient-text-purple">Contenido Exclusivo de Two Moons</h2>
+          <p class="section-desc">Innovación constante para mantener el servidor vivo, divertido y competitivo desde el nivel 1 hasta el 85.</p>
+        </header>
+
+        <div class="features-grid">
+          <!-- Card 1 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-gem"></i></div>
+            <h3 class="feature-title">Joyas Boss Escalonadas</h3>
+            <p>Colecciona Joyas Épicas y Raras divididas en 5 niveles de evolución. Consigue tus joyas jugando y mejóralas mediante misiones y farmeo diario.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3 class="feature-title">Belts & Capas Legendarias</h3>
+            <p>Nuevos cinturones y capas coleccionables que potencian tus atributos primarios (STR, DEX, CON, WIT, INT, MEN) adaptados al combate PvP moderno.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-trophy"></i></div>
+            <h3 class="feature-title">Eventos Automáticos Diarios</h3>
+            <p>Batallas masivas automáticas cada 2 horas: Team vs Team (TvT), Captura la Bandera (CtF), Deathmatch y Last Hero con recompensas de medallas de honor.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-dungeon"></i></div>
+            <h3 class="feature-title">Zonas de Farm & PvP Flag</h3>
+            <p>Zonas diseñadas para jugadores solitarios, áreas para partys de clanes y zonas especiales PvP Flagged con rates aumentados para los más valientes.</p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-chess-rook"></i></div>
+            <h3 class="feature-title">Asedios y Olimpiadas Épicas</h3>
+            <p>Asedios de castillos semanales por los grandes tronos de Aden y Giran, junto a un ciclo de olimpiadas quincenal con héroes reconocidos.</p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-headset"></i></div>
+            <h3 class="feature-title">Atención & Soporte Cercano</h3>
+            <p>Staff presente y accesible. Escuchamos a los líderes de clan y jugadores para aplicar mejoras continuas y garantizar la longevidad del proyecto.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Races & Classes Showcase (Lineage II High Five) -->
+    <section id="razas">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">Crónica High Five</span>
+          <h2 class="section-title gradient-text-purple">Razas & Clases de Two Moons</h2>
+          <p class="section-desc">Explora las 6 razas legendarias de Lineage II. Cada una cuenta con afinidades divinas, atributos únicos y diversas ramas de especialización para dominar el PvP y las batallas de clanes.</p>
+        </header>
+
+        <div class="races-grid">
+          <!-- 1. HUMANOS -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-sun"></i> Gran Kain</span>
+                <img src="assets/images/races/human.png" alt="Raza Humanos Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Humanos</h3>
+                <span class="race-affinity">Versatilidad Total</span>
+              </div>
+              <p class="race-desc">
+                La raza más numerosa y adaptable del continente. Poseen atributos equilibrados y el catálogo más extenso de especializaciones, capaces de asumir cualquier rol en party o combate solitario con formidable efectividad.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-shield"></i> Tanque</span>
+                <span class="role-pill"><i class="fa-solid fa-hand-fist"></i> Gladiador</span>
+                <span class="role-pill"><i class="fa-solid fa-wand-magic"></i> Mago Fuego</span>
+                <span class="role-pill"><i class="fa-solid fa-cross"></i> Healer Puro</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Duelist, Dreadnought, Phoenix Knight, Hell Knight, Sagittario, Archmage, Soultaker, Cardinal</span>
+            </div>
+          </article>
+
+          <!-- 2. ELFOS DE LA LUZ -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-droplet"></i> Eva (Agua)</span>
+                <img src="assets/images/races/elf.png" alt="Raza Elfos Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Elfos</h3>
+                <span class="race-affinity">Agilidad & Evasión</span>
+              </div>
+              <p class="race-desc">
+                Criaturas vinculadas al agua y la naturaleza. Ostentan la mayor velocidad de movimiento, agilidad de ataque físico y la velocidad de casteo mágico más rápida de todo el juego, destacando en kiteo y soporte evasivo.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-feather"></i> Evasión Suprema</span>
+                <span class="role-pill"><i class="fa-solid fa-bolt"></i> Rápido Casteo</span>
+                <span class="role-pill"><i class="fa-solid fa-music"></i> Buffer Canciones</span>
+                <span class="role-pill"><i class="fa-solid fa-bow-arrow"></i> Arquero Veloz</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Eva's Templar, Sword Muse, Wind Rider, Moonlight Sentinel, Mystic Muse, Eva's Saint</span>
+            </div>
+          </article>
+
+          <!-- 3. ELFOS OSCUROS -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-moon"></i> Shilen (Muerte)</span>
+                <img src="assets/images/races/dark_elf.png" alt="Raza Elfos Oscuros Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Elfos Oscuros</h3>
+                <span class="race-affinity">Poder Crítico Letal</span>
+              </div>
+              <p class="race-desc">
+                Guerreros exiliados devotos de Shilen. Su fisiología potenciada con magia oscura les otorga el ataque físico (STR) y poder mágico (INT) más devastador de Aden, convirtiéndolos en armas letales de eliminación rápida.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-skull"></i> Críticos Letales</span>
+                <span class="role-pill"><i class="fa-solid fa-skull-crossbones"></i> Asesino</span>
+                <span class="role-pill"><i class="fa-solid fa-music"></i> Danzante de Espadas</span>
+                <span class="role-pill"><i class="fa-solid fa-ghost"></i> Magia Oscura</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Shillien Templar, Spectral Dancer, Ghost Hunter, Ghost Sentinel, Storm Screamer, Shillien Saint</span>
+            </div>
+          </article>
+
+          <!-- 4. ORCOS -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-fire"></i> Pa'agrio (Fuego)</span>
+                <img src="assets/images/races/orc.png" alt="Raza Orcos Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Orcos</h3>
+                <span class="race-affinity">Fuerza Bruta & Vitalidad</span>
+              </div>
+              <p class="race-desc">
+                Poderosos combatientes bendecidos por el fuego. Cuentan con colosales reservas de HP, resistencia inquebrantable a penalizaciones y habilidades berserker capaces de demoler murallas y hordas de enemigos en segundos.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-heart-pulse"></i> HP Colosal</span>
+                <span class="role-pill"><i class="fa-solid fa-gavel"></i> Berserker Titan</span>
+                <span class="role-pill"><i class="fa-solid fa-people-group"></i> Buffer de Clan</span>
+                <span class="role-pill"><i class="fa-solid fa-fist-raised"></i> Luchador Tirano</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Titan (Destroyer), Grand Khavatari (Tyrant), Dominator (Overlord), Doomcryer (Warcryer)</span>
+            </div>
+          </article>
+
+          <!-- 5. ENANOS -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-gem"></i> Maphr (Tierra)</span>
+                <img src="assets/images/races/dwarf.png" alt="Raza Enanos Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Enanos</h3>
+                <span class="race-affinity">Artesanía & Spoil</span>
+              </div>
+              <p class="race-desc">
+                La espina dorsal de la economía de Two Moons. Poseen una robustez física envidiable y habilidades exclusivas para recolectar materiales secretos de los monstruos (Spoil) y forjar las mejores armas y armaduras Grado S y S84.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-coins"></i> Motor Económico</span>
+                <span class="role-pill"><i class="fa-solid fa-hammer"></i> Crafteo Grado S/S84</span>
+                <span class="role-pill"><i class="fa-solid fa-magnet"></i> Spoil Exclusivo</span>
+                <span class="role-pill"><i class="fa-solid fa-robot"></i> Gólems de Asedio</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Fortune Seeker (Bounty Hunter - Spoil), Maestro (Warsmith - Crafteo & Gólems)</span>
+            </div>
+          </article>
+
+          <!-- 6. KAMAEL -->
+          <article class="race-card">
+            <div>
+              <div class="race-img-box">
+                <span class="race-badge-god"><i class="fa-solid fa-feather"></i> Los Gigantes</span>
+                <img src="assets/images/races/kamael.png" alt="Raza Kamael Lineage 2" class="race-img" loading="lazy">
+              </div>
+              <div class="race-title-wrap">
+                <h3 class="race-title">Kamael</h3>
+                <span class="race-affinity">Almas & Armas Únicas</span>
+              </div>
+              <p class="race-desc">
+                Soldados de combate de una sola ala creados en la antigüedad. Su estilo de juego se basa en absorber las almas de sus víctimas para potenciar sus devastadoras habilidades con armas exclusivas como Rapiers, Espadas Antiguas y Ballestas.
+              </p>
+              <div class="race-roles">
+                <span class="role-pill"><i class="fa-solid fa-fire-flame-curved"></i> Absorción de Almas</span>
+                <span class="role-pill"><i class="fa-solid fa-wand-sparkles"></i> Rapier & Magia</span>
+                <span class="role-pill"><i class="fa-solid fa-crosshairs"></i> Ballesta Rápida</span>
+                <span class="role-pill"><i class="fa-solid fa-burst"></i> Doombringer</span>
+              </div>
+            </div>
+            <div class="race-classes-box">
+              <span class="race-classes-label">Clases Principales (3ra Prof.)</span>
+              <span class="race-classes-text">Doombringer (Berserker), Soul Hound (Soul Breaker), Trickster (Arbalester), Judicator (Inspector)</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Downloads Hub -->
+    <section id="descargas">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">Descarga Oficial</span>
+          <h2 class="section-title gradient-text-purple">Centro de Descargas</h2>
+          <p class="section-desc">Descarga nuestro Launcher oficial para actualizaciones automáticas o descarga el cliente completo por tu servidor de preferencia.</p>
+        </header>
+
+        <div class="downloads-wrapper">
+          <!-- Tab Navigation -->
+          <div class="download-tabs">
+            <button class="download-tab-btn active" data-target="tab-launcher">
+              <i class="fa-solid fa-rocket"></i> Launcher Oficial (Recomendado)
+            </button>
+            <button class="download-tab-btn" data-target="tab-client">
+              <i class="fa-solid fa-compact-disc"></i> Cliente Completo H5
+            </button>
+            <button class="download-tab-btn" data-target="tab-patch">
+              <i class="fa-solid fa-file-zipper"></i> Parche / System
+            </button>
+          </div>
+
+          <!-- Tab Content 1: Launcher -->
+          <div id="tab-launcher" class="download-tab-content active">
+            <div class="download-hero-card">
+              <div class="download-info">
+                <h3 id="launcher-name-disp">Two Moons Launcher Oficial</h3>
+                <p>Descarga nuestro instalador ligero con actualizaciones automáticas integradas, verificación rápida de archivos y acceso directo al juego.</p>
+                <div class="download-specs-pill">
+                  <span><i class="fa-solid fa-code-branch"></i> Versión: <strong id="launcher-version-disp">1.2.0</strong></span>
+                  <span><i class="fa-solid fa-weight-hanging"></i> Tamaño: <strong id="launcher-size-disp">8.5 MB</strong></span>
+                  <span><i class="fa-brands fa-windows"></i> Windows 7 / 10 / 11</span>
+                </div>
+              </div>
+              <a id="btn-launcher-direct" href="https://mega.nz/twomoons-launcher" target="_blank" class="btn btn-gold btn-lg">
+                <i class="fa-solid fa-download"></i> DESCARGAR LAUNCHER
+              </a>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Complete Client -->
+          <div id="tab-client" class="download-tab-content">
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--color-silver-dark);">
+              Si aún no tienes instalado Lineage II High Five en tu computadora, descarga el cliente completo limpio:
+            </p>
+            <div class="mirrors-grid">
+              <a id="mirror-client-mega" href="https://mega.nz/twomoons-client-h5" target="_blank" class="mirror-btn">
+                <i class="fa-solid fa-cloud-arrow-down mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Mega.nz</h4>
+                  <span>Cliente H5 Completo (~6.2 GB)</span>
+                </div>
+              </a>
+              <a id="mirror-client-mediafire" href="https://mediafire.com/twomoons-client-h5" target="_blank" class="mirror-btn">
+                <i class="fa-solid fa-cloud-arrow-down mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Mediafire</h4>
+                  <span>Cliente H5 Completo (~6.2 GB)</span>
+                </div>
+              </a>
+              <a id="mirror-client-drive" href="https://drive.google.com/twomoons-client-h5" target="_blank" class="mirror-btn">
+                <i class="fa-brands fa-google-drive mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Google Drive</h4>
+                  <span>Cliente H5 Completo (~6.2 GB)</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: Patch System -->
+          <div id="tab-patch" class="download-tab-content">
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--color-silver-dark);">
+              ¿Ya tienes el cliente de High Five? Descarga y descomprime nuestra carpeta <strong>system</strong> dentro de tu juego:
+            </p>
+            <div class="mirrors-grid">
+              <a id="mirror-patch-mega" href="https://mega.nz/twomoons-patch-system" target="_blank" class="mirror-btn">
+                <i class="fa-solid fa-file-zipper mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Mega.nz</h4>
+                  <span>System Parche (~145 MB)</span>
+                </div>
+              </a>
+              <a id="mirror-patch-mediafire" href="https://mediafire.com/twomoons-patch-system" target="_blank" class="mirror-btn">
+                <i class="fa-solid fa-file-zipper mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Mediafire</h4>
+                  <span>System Parche (~145 MB)</span>
+                </div>
+              </a>
+              <a id="mirror-patch-drive" href="https://drive.google.com/twomoons-patch-system" target="_blank" class="mirror-btn">
+                <i class="fa-brands fa-google-drive mirror-icon"></i>
+                <div class="mirror-text">
+                  <h4>Google Drive</h4>
+                  <span>System Parche (~145 MB)</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- System Requirements Box -->
+          <div class="sys-req-box">
+            <h4><i class="fa-solid fa-laptop-code" style="color: var(--color-ember-gold);"></i> Requisitos Mínimos del Sistema</h4>
+            <div class="sys-req-grid">
+              <div class="sys-req-item">
+                <strong>Sistema Operativo:</strong>
+                <span>Windows 7, 8, 10 o Windows 11</span>
+              </div>
+              <div class="sys-req-item">
+                <strong>Memoria RAM:</strong>
+                <span>4 GB mínimo (8 GB recomendado)</span>
+              </div>
+              <div class="sys-req-item">
+                <strong>Espacio en Disco:</strong>
+                <span>15 GB de almacenamiento libre</span>
+              </div>
+              <div class="sys-req-item">
+                <strong>Gráficos:</strong>
+                <span>Tarjeta con soporte DirectX 9.0c</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News & Updates Section -->
+    <section id="noticias" style="background: rgba(11, 5, 23, 0.4);">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">Blog & Comunicados</span>
+          <h2 class="section-title gradient-text-purple">Últimas Noticias & Parches</h2>
+          <p class="section-desc">Mantente al tanto de los mantenimientos, eventos especiales y notas de balance del servidor.</p>
+        </header>
+
+        <!-- Dynamic News Grid -->
+        <div id="public-news-grid" class="news-grid">
+          <!-- Loaded dynamically from API -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Donations & Fair Play Banner -->
+    <section id="donaciones">
+      <div class="container">
+        <div class="donation-banner">
+          <div class="donation-info">
+            <h3 class="gradient-text-gold">Donaciones & Tienda Fair Play</h3>
+            <p>
+              En <strong>L2 Two Moons</strong> creemos en el juego justo. Las donaciones son voluntarias y se reinvierten en hosting dedicado, protección Anti-DDoS y mejoras continuas. La tienda no ofrece ventajas Pay-To-Win desmedidas.
+            </p>
+          </div>
+          <div class="donation-buttons">
+            <button class="btn btn-gold btn-lg" onclick="openModal('claim-donation-modal')">
+              <i class="fa-solid fa-receipt"></i> Reclamar Donación
+            </button>
+            <a href="https://discord.gg/twomoons" target="_blank" class="btn btn-outline btn-lg">
+              <i class="fa-solid fa-comments"></i> Consultar al Staff
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & Social Section -->
+    <section id="comunidad" style="background: rgba(11, 5, 23, 0.4);">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">Comunidad Activa</span>
+          <h2 class="section-title gradient-text-purple">Únete a Nuestras Redes</h2>
+          <p class="section-desc">Forma parte de la comunidad de L2 Two Moons, recluta para tu clan y habla directamente con los administradores.</p>
+        </header>
+
+        <div class="community-grid">
+          <!-- Discord -->
+          <a id="link-discord-card" href="https://discord.gg/twomoons" target="_blank" class="social-card discord">
+            <div class="social-icon-circle"><i class="fa-brands fa-discord"></i></div>
+            <h4 class="social-title">Discord</h4>
+            <p>Canales de clanes, anuncios al instante, soporte por tickets y sorteos semanales.</p>
+            <span class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 1rem;">Entrar al Discord</span>
+          </a>
+
+          <!-- WhatsApp -->
+          <a id="link-whatsapp-card" href="https://chat.whatsapp.com/twomoons" target="_blank" class="social-card whatsapp">
+            <div class="social-icon-circle"><i class="fa-brands fa-whatsapp"></i></div>
+            <h4 class="social-title">WhatsApp</h4>
+            <p>Grupo oficial de avisos y soporte directo para consultas rápidas.</p>
+            <span class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 1rem;">Unirme al Grupo</span>
+          </a>
+
+          <!-- YouTube -->
+          <a id="link-youtube-card" href="https://youtube.com/@l2twomoons" target="_blank" class="social-card youtube">
+            <div class="social-icon-circle"><i class="fa-brands fa-youtube"></i></div>
+            <h4 class="social-title">YouTube</h4>
+            <p>Trailers de eventos, asedios semanales y guías en video para nuevos jugadores.</p>
+            <span class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 1rem;">Ver Videos</span>
+          </a>
+
+          <!-- TikTok -->
+          <a id="link-tiktok-card" href="https://tiktok.com/@l2twomoons" target="_blank" class="social-card tiktok">
+            <div class="social-icon-circle"><i class="fa-brands fa-tiktok"></i></div>
+            <h4 class="social-title">TikTok</h4>
+            <p>Clips de PvP, momentos épicos de asedios y memes de la comunidad.</p>
+            <span class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 1rem;">Seguir en TikTok</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="brand-logo-wrap" style="margin-bottom: 0.8rem;">
+              <img src="assets/images/logo.png" alt="L2 Two Moons" style="width: 44px; height: 44px; border-radius: 50%;">
+              <div class="brand-text">
+                <h3 style="font-family: var(--font-epic); font-size: 1.2rem; color: #fff;">L2 TWO MOONS</h3>
+                <span style="font-size: 0.7rem; color: var(--color-purple-light);">HIGH FIVE SERVER</span>
+              </div>
+            </div>
+            <p>
+              El servidor de Lineage 2 High Five enfocado en la comunidad latina. Estabilidad, balance y diversión garantizada para clanes y solitarios.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Navegación</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Inicio</a></li>
+              <li><a href="#rates">Información & Rates</a></li>
+              <li><a href="#caracteristicas">Novedades</a></li>
+              <li><a href="#descargas">Descargas</a></li>
+              <li><a href="#noticias">Noticias & Parches</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Enlaces Útiles</h4>
+            <ul class="footer-links">
+              <li><a href="javascript:void(0)" onclick="openModal('register-modal')">Crear Cuenta</a></li>
+              <li><a href="javascript:void(0)" onclick="openModal('claim-donation-modal')">Reclamar Donación</a></li>
+              <li><a href="javascript:void(0)" onclick="openModal('login-modal')">Panel de Usuario</a></li>
+              <li><a href="#rates">Reglas del Servidor</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Redes Oficiales</h4>
+            <ul class="footer-links">
+              <li><a id="link-discord-footer" href="https://discord.gg/twomoons" target="_blank"><i class="fa-brands fa-discord"></i> Discord Oficial</a></li>
+              <li><a id="link-facebook-footer" href="https://facebook.com/l2twomoons" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
+              <li><a href="mailto:contacto@l2twomoons.com"><i class="fa-solid fa-envelope"></i> Soporte por Email</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 L2 Two Moons Systems. Todos los derechos reservados.</p>
+          <p class="footer-disclaimer">
+            Lineage II es una marca registrada de NCSOFT Corporation. Este es un servidor de emulación privado sin fines de lucro comercial directo, desarrollado con fines educativos y de entretenimiento comunitario.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating Support Button (WhatsApp) -->
+    <a id="link-whatsapp-floating" href="https://chat.whatsapp.com/twomoons" target="_blank" class="floating-support-btn" title="Soporte WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+  </div><!-- /content-wrapper -->
+
+  <!-- ==========================================================================
+       MODALS
+       ========================================================================== -->
+
+  <!-- 1. LOGIN MODAL -->
+  <div id="login-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-right-to-bracket" style="color: var(--color-ember-gold);"></i> Iniciar Sesión</h3>
+        <button class="btn-close-modal" onclick="closeModal('login-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="login-alert" class="form-alert"></div>
+        <form id="form-user-login">
+          <div class="form-group">
+            <label for="login-username">Usuario de Juego o Administrador</label>
+            <input type="text" id="login-username" class="form-control" placeholder="Ingresa tu usuario" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">
+            <i class="fa-solid fa-key"></i> INGRESAR
+          </button>
+        </form>
+        <p style="text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: var(--color-silver-dark);">
+          ¿No tienes una cuenta aún?
+          <a href="javascript:void(0)" onclick="closeModal('login-modal'); openModal('register-modal');" style="color: var(--color-purple-light); font-weight: 600;">
+            Crear Cuenta aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. REGISTER MODAL -->
+  <div id="register-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus" style="color: var(--color-purple-mid);"></i> Crear Cuenta de Juego</h3>
+        <button class="btn-close-modal" onclick="closeModal('register-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="register-alert" class="form-alert"></div>
+        <form id="form-user-register">
+          <div class="form-group">
+            <label for="reg-username">Nombre de Usuario (Login de juego)</label>
+            <input type="text" id="reg-username" class="form-control" placeholder="Ej: guerrero99" minlength="3" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Correo Electrónico (Para recuperación)</label>
+            <input type="email" id="reg-email" class="form-control" placeholder="tu-correo@ejemplo.com" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Contraseña</label>
+            <input type="password" id="reg-password" class="form-control" placeholder="Mínimo 6 caracteres" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-password-confirm">Confirmar Contraseña</label>
+            <input type="password" id="reg-password-confirm" class="form-control" placeholder="Repite tu contraseña" minlength="6" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">
+            <i class="fa-solid fa-shield"></i> REGISTRAR CUENTA
+          </button>
+        </form>
+        <p style="text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: var(--color-silver-dark);">
+          ¿Ya tienes cuenta?
+          <a href="javascript:void(0)" onclick="closeModal('register-modal'); openModal('login-modal');" style="color: var(--color-ember-gold); font-weight: 600;">
+            Iniciar Sesión
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CLAIM DONATION MODAL -->
+  <div id="claim-donation-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt" style="color: var(--color-ember-gold);"></i> Reclamar Donación</h3>
+        <button class="btn-close-modal" onclick="closeModal('claim-donation-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-claim-donation">
+          <p style="font-size: 0.88rem; color: var(--color-silver-dark); margin-bottom: 1.2rem;">
+            Ingresa los datos de tu aporte para que el Administrador valide tu acreditación en el juego:
+          </p>
+          <div class="form-group">
+            <label for="claim-char-name">Nombre de tu Personaje (Nick)</label>
+            <input type="text" id="claim-char-name" class="form-control" placeholder="Ej: DarkKnight" required>
+          </div>
+          <div class="form-group">
+            <label for="claim-method">Método de Donación</label>
+            <select id="claim-method" class="form-control">
+              <option value="MercadoPago">MercadoPago / Transferencia</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Binance/Crypto">Criptomonedas / Binance Pay</option>
+              <option value="Otro">Otro medio de pago</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="claim-trans-id">Número de Operación o ID de Pago</label>
+            <input type="text" id="claim-trans-id" class="form-control" placeholder="Ej: OP-9842104" required>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">
+            <i class="fa-solid fa-paper-plane"></i> ENVIAR COMPROBANTE
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MASTER ADMIN CMS MODAL -->
+  <div id="admin-cms-modal" class="modal-overlay">
+    <div class="modal-box admin-modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-sliders" style="color: var(--color-ember-gold);"></i> Panel de Control - CMS Administrador</h3>
+        <button class="btn-close-modal" onclick="closeModal('admin-cms-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="admin-dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+          <button class="admin-nav-item active" data-tab="admin-tab-general">
+            <i class="fa-solid fa-globe"></i> <span>Servidor & Estado</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-rates">
+            <i class="fa-solid fa-bolt"></i> <span>Rates & Mecánicas</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-downloads">
+            <i class="fa-solid fa-download"></i> <span>Enlaces Descargas</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-social">
+            <i class="fa-solid fa-share-nodes"></i> <span>Redes Sociales</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-news">
+            <i class="fa-solid fa-newspaper"></i> <span>Noticias & Parches</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-users">
+            <i class="fa-solid fa-users"></i> <span>Jugadores</span>
+          </button>
+          <button class="admin-nav-item" data-tab="admin-tab-security">
+            <i class="fa-solid fa-key"></i> <span>Seguridad</span>
+          </button>
+        </aside>
+
+        <!-- Tab Content Area -->
+        <main class="admin-content-area">
+
+          <!-- PANE 1: GENERAL -->
+          <div id="admin-tab-general" class="admin-tab-pane active">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-server"></i> Estado General del Servidor</h4>
+                <p>Edita los textos de bienvenida, título y estado operativo en tiempo real.</p>
+              </div>
+            </div>
+
+            <form id="form-admin-general">
+              <div class="admin-form-grid">
+                <div class="form-group">
+                  <label for="adm-server-name">Nombre del Servidor</label>
+                  <input type="text" id="adm-server-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="adm-server-chronicle">Crónica</label>
+                  <input type="text" id="adm-server-chronicle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="adm-server-engine">Motor / Plataforma</label>
+                  <input type="text" id="adm-server-engine" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="adm-server-players">Jugadores en Línea (Contador)</label>
+                  <input type="number" id="adm-server-players" class="form-control" required>
+                </div>
+              </div>
+
+              <!-- Status Selector -->
+              <div class="form-group">
+                <label>Estado del Servidor (Visibilidad en la barra superior)</label>
+                <div class="server-status-selector">
+                  <label class="status-radio-label online">
+                    <input type="radio" name="server_status" value="ONLINE">
+                    <i class="fa-solid fa-circle" style="font-size: 0.6rem;"></i> ONLINE
+                  </label>
+                  <label class="status-radio-label maintenance">
+                    <input type="radio" name="server_status" value="MAINTENANCE">
+                    <i class="fa-solid fa-wrench" style="font-size: 0.7rem;"></i> Mantenimiento
+                  </label>
+                  <label class="status-radio-label offline">
+                    <input type="radio" name="server_status" value="OFFLINE">
+                    <i class="fa-solid fa-clock" style="font-size: 0.7rem;"></i> Próximamente
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="adm-server-slogan">Slogan Principal</label>
+                <input type="text" id="adm-server-slogan" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="adm-server-subtitle">Subtítulo Descriptivo</label>
+                <textarea id="adm-server-subtitle" class="form-control" rows="2"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="adm-server-announcement">Texto de la Barra Superior de Anuncios</label>
+                <input type="text" id="adm-server-announcement" class="form-control">
+              </div>
+
+              <div class="admin-footer-bar">
+                <button type="submit" class="btn btn-gold">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios Generales
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- PANE 2: RATES -->
+          <div id="admin-tab-rates" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-chart-pie"></i> Rates & Configuraciones de Juego</h4>
+                <p>Modifica los multiplicadores de drop, experiencia y encantamientos.</p>
+              </div>
+            </div>
+
+            <form id="form-admin-rates">
+              <div class="admin-form-grid">
+                <div class="form-group">
+                  <label for="adm-rate-exp">Rate EXP</label>
+                  <input type="text" id="adm-rate-exp" class="form-control" placeholder="ej: x50">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-sp">Rate SP</label>
+                  <input type="text" id="adm-rate-sp" class="form-control" placeholder="ej: x50">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-adena">Rate Adena</label>
+                  <input type="text" id="adm-rate-adena" class="form-control" placeholder="ej: x25">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-drop">Rate Drop Items</label>
+                  <input type="text" id="adm-rate-drop" class="form-control" placeholder="ej: x10">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-spoil">Rate Spoil</label>
+                  <input type="text" id="adm-rate-spoil" class="form-control" placeholder="ej: x10">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-party">Rate Party Exp</label>
+                  <input type="text" id="adm-rate-party" class="form-control" placeholder="ej: x1.5">
+                </div>
+                <div class="form-group">
+                  <label for="adm-rate-raid">Rate Raid Boss Drop</label>
+                  <input type="text" id="adm-rate-raid" class="form-control" placeholder="ej: x3">
+                </div>
+                <div class="form-group">
+                  <label for="adm-safe-enchant">Enchant Seguro</label>
+                  <input type="text" id="adm-safe-enchant" class="form-control" placeholder="ej: +3">
+                </div>
+                <div class="form-group">
+                  <label for="adm-max-enchant-weapon">Enchant Máximo Arma</label>
+                  <input type="text" id="adm-max-enchant-weapon" class="form-control" placeholder="ej: +16">
+                </div>
+                <div class="form-group">
+                  <label for="adm-max-enchant-armor">Enchant Máximo Armadura</label>
+                  <input type="text" id="adm-max-enchant-armor" class="form-control" placeholder="ej: +12">
+                </div>
+                <div class="form-group">
+                  <label for="adm-buff-duration">Duración de Buffs</label>
+                  <input type="text" id="adm-buff-duration" class="form-control" placeholder="ej: 2 Horas">
+                </div>
+                <div class="form-group">
+                  <label for="adm-buff-slots">Slots de Buffs</label>
+                  <input type="text" id="adm-buff-slots" class="form-control" placeholder="ej: 28 + 4">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="adm-subclass">Detalle de Subclases</label>
+                <input type="text" id="adm-subclass" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="adm-noblesse">Detalle de Noblesse</label>
+                <input type="text" id="adm-noblesse" class="form-control">
+              </div>
+
+              <div class="admin-footer-bar">
+                <button type="submit" class="btn btn-gold">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Rates del Servidor
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- PANE 3: DOWNLOADS -->
+          <div id="admin-tab-downloads" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-cloud-arrow-down"></i> Enlaces de Descarga</h4>
+                <p>Actualiza los enlaces de Mega, Mediafire y Google Drive en cualquier momento.</p>
+              </div>
+            </div>
+
+            <form id="form-admin-downloads">
+              <h5 style="color: var(--color-purple-light); margin-bottom: 1rem;">Launcher Oficial</h5>
+              <div class="admin-form-grid">
+                <div class="form-group">
+                  <label for="adm-dl-launcher-name">Nombre del Launcher</label>
+                  <input type="text" id="adm-dl-launcher-name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="adm-dl-launcher-ver">Versión</label>
+                  <input type="text" id="adm-dl-launcher-ver" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="adm-dl-launcher-url">Enlace Directo del Launcher</label>
+                <input type="url" id="adm-dl-launcher-url" class="form-control">
+              </div>
+
+              <h5 style="color: var(--color-purple-light); margin: 1.5rem 0 1rem;">Cliente High Five Completo (Espejos)</h5>
+              <div class="form-group">
+                <label for="adm-dl-client-mega">Mega.nz Cliente</label>
+                <input type="url" id="adm-dl-client-mega" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="adm-dl-client-mediafire">Mediafire Cliente</label>
+                <input type="url" id="adm-dl-client-mediafire" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="adm-dl-client-drive">Google Drive Cliente</label>
+                <input type="url" id="adm-dl-client-drive" class="form-control">
+              </div>
+
+              <h5 style="color: var(--color-purple-light); margin: 1.5rem 0 1rem;">Parche / System Limpio (Espejos)</h5>
+              <div class="form-group">
+                <label for="adm-dl-patch-mega">Mega.nz Parche</label>
+                <input type="url" id="adm-dl-patch-mega" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="adm-dl-patch-mediafire">Mediafire Parche</label>
+                <input type="url" id="adm-dl-patch-mediafire" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="adm-dl-patch-drive">Google Drive Parche</label>
+                <input type="url" id="adm-dl-patch-drive" class="form-control">
+              </div>
+
+              <div class="admin-footer-bar">
+                <button type="submit" class="btn btn-gold">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Enlaces de Descarga
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- PANE 4: SOCIAL NETWORKS -->
+          <div id="admin-tab-social" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-share-nodes"></i> Redes Sociales y Soporte</h4>
+                <p>Configura las URLs de Discord, WhatsApp, YouTube, TikTok y canales oficiales.</p>
+              </div>
+            </div>
+
+            <form id="form-admin-social">
+              <div class="admin-form-grid">
+                <div class="form-group">
+                  <label for="adm-social-discord"><i class="fa-brands fa-discord" style="color: #5865F2;"></i> Enlace de Discord</label>
+                  <input type="url" id="adm-social-discord" class="form-control" placeholder="https://discord.gg/...">
+                </div>
+                <div class="form-group">
+                  <label for="adm-social-whatsapp"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Enlace Grupo WhatsApp</label>
+                  <input type="url" id="adm-social-whatsapp" class="form-control" placeholder="https://chat.whatsapp.com/...">
+                </div>
+                <div class="form-group">
+                  <label for="adm-social-youtube"><i class="fa-brands fa-youtube" style="color: #ff0000;"></i> Canal de YouTube</label>
+                  <input type="url" id="adm-social-youtube" class="form-control" placeholder="https://youtube.com/@...">
+                </div>
+                <div class="form-group">
+                  <label for="adm-social-tiktok"><i class="fa-brands fa-tiktok"></i> Perfil de TikTok</label>
+                  <input type="url" id="adm-social-tiktok" class="form-control" placeholder="https://tiktok.com/@...">
+                </div>
+                <div class="form-group">
+                  <label for="adm-social-facebook"><i class="fa-brands fa-facebook" style="color: #1877f2;"></i> Página de Facebook</label>
+                  <input type="url" id="adm-social-facebook" class="form-control" placeholder="https://facebook.com/...">
+                </div>
+                <div class="form-group">
+                  <label for="adm-social-email"><i class="fa-solid fa-envelope"></i> Correo de Soporte</label>
+                  <input type="email" id="adm-social-email" class="form-control" placeholder="contacto@...">
+                </div>
+              </div>
+
+              <div class="admin-footer-bar">
+                <button type="submit" class="btn btn-gold">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Enlaces Sociales
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- PANE 5: NEWS & ANNOUNCEMENTS -->
+          <div id="admin-tab-news" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-newspaper"></i> Publicar y Administrar Noticias</h4>
+                <p>Publica avisos de mantenimiento, notas de actualización o eventos para los jugadores.</p>
+              </div>
+            </div>
+
+            <!-- Create News Form -->
+            <form id="form-admin-create-news" style="background: rgba(22, 11, 44, 0.5); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+              <h5 style="color: #fff; margin-bottom: 1rem;"><i class="fa-solid fa-plus-circle" style="color: var(--color-ember-gold);"></i> Nueva Noticia</h5>
+              <div class="admin-form-grid">
+                <div class="form-group">
+                  <label for="adm-news-title">Título de la Noticia</label>
+                  <input type="text" id="adm-news-title" class="form-control" placeholder="Ej: Notas del Parche v1.2" required>
+                </div>
+                <div class="form-group">
+                  <label for="adm-news-category">Categoría</label>
+                  <select id="adm-news-category" class="form-control">
+                    <option value="Anuncio">Anuncio</option>
+                    <option value="Actualización">Actualización / Parche</option>
+                    <option value="Eventos">Eventos</option>
+                    <option value="Tutorial">Tutorial / Guía</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="adm-news-summary">Resumen Breve (Aparece en la tarjeta)</label>
+                <input type="text" id="adm-news-summary" class="form-control" placeholder="Breve descripción..." required>
+              </div>
+              <div class="form-group">
+                <label for="adm-news-content">Contenido Completo</label>
+                <textarea id="adm-news-content" class="form-control" rows="3" placeholder="Detalle completo de la noticia..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-upload"></i> Publicar Noticia
+              </button>
+            </form>
+
+            <h5 style="color: #fff; margin: 2rem 0 1rem;">Noticias Publicadas</h5>
+            <div id="admin-news-list" class="news-admin-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- PANE 6: REGISTERED PLAYERS -->
+          <div id="admin-tab-users" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-users"></i> Jugadores Registrados</h4>
+                <p>Lista de cuentas creadas en el servidor y fechas de registro.</p>
+              </div>
+            </div>
+
+            <div class="users-table-wrap">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Fecha Registro</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-table-body">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PANE 7: SECURITY -->
+          <div id="admin-tab-security" class="admin-tab-pane">
+            <div class="admin-pane-header">
+              <div>
+                <h4><i class="fa-solid fa-lock"></i> Seguridad del Administrador</h4>
+                <p>Cambia tu contraseña de acceso administrativo en cualquier momento.</p>
+              </div>
+            </div>
+
+            <form id="form-admin-password" style="max-width: 480px;">
+              <div class="form-group">
+                <label for="adm-pass-current">Contraseña Actual</label>
+                <input type="password" id="adm-pass-current" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="adm-pass-new">Nueva Contraseña</label>
+                <input type="password" id="adm-pass-new" class="form-control" minlength="6" required>
+              </div>
+              <div class="form-group">
+                <label for="adm-pass-confirm">Confirmar Nueva Contraseña</label>
+                <input type="password" id="adm-pass-confirm" class="form-control" minlength="6" required>
+              </div>
+              <button type="submit" class="btn btn-gold" style="margin-top: 1rem;">
+                <i class="fa-solid fa-key"></i> Actualizar Contraseña
+              </button>
+            </form>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- JavaScript Scripts -->
+  <script src="assets/js/particles.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

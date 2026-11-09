@@ -176,7 +176,7 @@ on conflict (id) do nothing;
 -- Insertar cuentas iniciales (Admin y Jugador de prueba)
 insert into public.users (id, username, email, password, role)
 values
-  ('admin-1', 'admin', 'admin@l2twomoons.com', '$2b$10$wy0DAwGaF16OBRRLBYORfe6AZ.rJMSJZIRRbXkmcC7ucVeTbPWSdS', 'admin'),
+  ('admin-1', 'admin', 'admin@l2twomoons.com', '$2b$10$QdZ9DQkJX16KhK28/Js/HOq4k/2qXrk8B03S4AGnPGlHgydxVUktq', 'admin'),
   ('user-1790117637362', 'DarkAvenger', 'player@test.com', '$2b$10$WnvT1Rarqaldj/ZYbGu5vOxyAyXWYZo2EgAYbMlA2lOAiG.ZCFUbS', 'player')
 on conflict (username) do nothing;
 

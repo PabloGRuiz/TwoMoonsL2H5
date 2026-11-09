@@ -104,7 +104,7 @@
 }
 
 .admin-pane-header h4 {
-  font-family: var(--font-epic);
+  font-family: var(--font-display);
   font-size: 1.35rem;
   color: #fff;
   display: flex;

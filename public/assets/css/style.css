@@ -43,7 +43,7 @@
 
   /* Typography */
   --font-display: 'Cinzel', serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Redaction 20', 'Plus Jakarta Sans', Georgia, serif;
 
   /* Elevation & Border Radius */
   --radius-sm: 8px;

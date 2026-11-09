@@ -178,6 +178,9 @@ function openModal(modalId) {
   if (modal) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.setCosmicParticlesPaused) {
+      window.setCosmicParticlesPaused(true);
+    }
   }
 }
 
@@ -185,7 +188,13 @@ function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.remove('active');
-    document.body.style.overflow = '';
+    const anyActive = document.querySelector('.modal-overlay.active');
+    if (!anyActive) {
+      document.body.style.overflow = '';
+      if (window.setCosmicParticlesPaused) {
+        window.setCosmicParticlesPaused(false);
+      }
+    }
   }
 }
 

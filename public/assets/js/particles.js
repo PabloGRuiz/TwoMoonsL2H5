@@ -50,13 +50,31 @@
   }
 
   let isPageVisible = true;
+  let isPaused = false;
+  let isRunning = false;
+
+  window.setCosmicParticlesPaused = function(paused) {
+    isPaused = !!paused;
+    if (!isPaused && isPageVisible && !isRunning) {
+      isRunning = true;
+      requestAnimationFrame(animate);
+    }
+  };
+
   document.addEventListener('visibilitychange', () => {
     isPageVisible = !document.hidden;
-    if (isPageVisible) requestAnimationFrame(animate);
+    if (isPageVisible && !isPaused && !isRunning) {
+      isRunning = true;
+      requestAnimationFrame(animate);
+    }
   });
 
   function animate() {
-    if (!isPageVisible) return;
+    if (!isPageVisible || isPaused) {
+      isRunning = false;
+      return;
+    }
+    isRunning = true;
 
     ctx.clearRect(0, 0, width, height);
 
@@ -87,5 +105,6 @@
     requestAnimationFrame(animate);
   }
 
+  isRunning = true;
   requestAnimationFrame(animate);
 })();

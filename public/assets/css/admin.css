@@ -9,6 +9,8 @@
   max-height: 90vh;
   display: flex;
   flex-direction: column;
+  contain: layout;
+  will-change: transform;
 }
 
 .admin-dashboard-container {
@@ -41,7 +43,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   border: 1px solid transparent;
   background: none;
   text-align: left;
@@ -71,17 +73,19 @@
   color: var(--color-ember-gold);
 }
 
-/* Tab Content Panels */
+/* Tab Content Panels (Hardware Accelerated & Isolated) */
 .admin-content-area {
   flex-grow: 1;
   padding: 2rem;
   overflow-y: auto;
   max-height: calc(90vh - 80px);
+  contain: content;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .admin-tab-pane {
   display: none;
-  animation: fadeIn 0.3s ease;
 }
 
 .admin-tab-pane.active {

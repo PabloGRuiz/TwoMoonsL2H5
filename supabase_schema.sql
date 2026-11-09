@@ -187,3 +187,4 @@ values
   ('news-2', 'Guía de Inicio Rápido & Zonas de Nivelación', 'Tutorial', '2026-09-20', 'Conoce dónde subir de nivel eficientemente, cómo funciona el NPC Buffer y las recompensas del Starter Kit para nuevos jugadores.', 'Al crear tu personaje recibirás un Starter Kit con armas sin grado, shot ilimitados de prueba y runas de experiencia para alcanzar nivel 40 en minutos.', false),
   ('news-3', 'Cronograma de Asedios de Castillos y Olimpiadas', 'Eventos', '2026-09-18', 'El ciclo de Olimpiadas será quincenal y los primeros asedios a Aden y Giran comenzarán el segundo fin de semana.', 'Las batallas por los castillos otorgarán puntos de clan, habilidades de señorío y bonificaciones en las tiendas de territorio para todos los integrantes.', false)
 on conflict (id) do nothing;
+
